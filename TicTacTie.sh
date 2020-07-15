@@ -10,6 +10,17 @@ function resettingBoard() {
     board=(. . . . . . . . . .)
 }
 
+function empty() {
+    index=0
+    for((cell=1;cell<=TOTAL_CELL;cell++)){
+       if [[ ${board[$loop]} == . ]]
+       then
+            emptyCells[$index]=$loop
+            let index++
+       fi
+}
+}
+
 function displayBoard() {
   echo -e "****** Tic-Tac-Toe ******* \n|  ${board[1]}  ||  ${board[2]}  ||  ${board[3]}  |\n---------------------\n| ${board[4]}   ||  ${board[5]}  ||  ${board[6]}  |\n-------------------\n|  ${board[7]}  ||  ${board[8]}  ||  ${board[9]}  |"
 
@@ -34,6 +45,47 @@ function tossToPlay() {
     fi
 }
 
+function switchPlayer() {
+    if [[ $switchPlayer == 0 ]]
+    then
+         playerPlaying
+    fi
+    #winningCondition $turnChange
+}
+
+function checkingEmptyCell() {
+   if [[ $position -ge 1 && $position -le 9 ]]
+   then
+      if [[ ${board[$position]} == . ]]
+      then
+      echo "............ $turnChange is placed at $position ............"
+      ((count++))
+      else
+      echo "Cell is already occupied!!!"
+      switchPlayer
+      fi
+  else
+      echo "Invalid cell value!!!"
+      switchPlayer
+  fi
+}
+
+
+function playerPlaying() {
+    echo "==========================="
+    echo "Player turn: "
+    displayBoard
+    echo "player latter : $playerLetter computer latter : $computerLetter"
+    echo "Empty Cells :${emptyCells[@]}"
+    read -p "Select your Cell : " position
+    turnChange=$playerLetter
+    checkingEmptyCell
+    board[$position]=$playerLetter
+    switchPlayer=1
+}
+
 resettingBoard
 displayBoard
 tossToPlay
+switchPlayer
+displayBoard

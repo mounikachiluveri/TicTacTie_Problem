@@ -49,7 +49,7 @@ function computerPlaying() {
     echo "========================="
     echo "Computer turn: "
     computerPlayingToWin
-    #computerPlayingToBlock
+    computerPlayingToBlock
     if [[ $block == 0 ]]
     then
          takeAvailableCorners
@@ -167,6 +167,24 @@ function computerPlayingToBlock() {
        fi
      fi
    done
+}
+
+function takeAvailableCorners() {
+  for((cell=1;cell<=$TOTAL_CELL;cell=$cell+2))
+  do
+      local flag=5
+    if [[ $cell == $flag ]]
+    then
+    cell=$(($cell+2))
+    fi
+    if [[ ${board[$cell]} == . ]]
+    then
+    board[$cell]=$computerLetter
+    local center=1
+    ((count++))
+    break
+    fi
+ done
 }
 
 

@@ -2,6 +2,7 @@
 echo "Weclome to Tic Tac Toe Game."
 TOTAL_CELL=9
 count=0
+ROW=3
 switchPlayer=1
 playerLetter=O
 computerLetter=X
@@ -13,9 +14,9 @@ function resettingBoard() {
 function empty() {
     index=0
     for((cell=1;cell<=TOTAL_CELL;cell++)){
-       if [[ ${board[$loop]} == . ]]
+       if [[ ${board[$cell]} == . ]]
        then
-            emptyCells[$index]=$loop
+            emptyCells[$index]=$cell
             let index++
        fi
 }
@@ -44,11 +45,26 @@ function tossToPlay() {
        echo "Computer will play first."
     fi
 }
+function computerPlaying() {
+    echo "========================="
+    echo "Computer turn: "
+    #computerPlayingToWin
+    #computerPlayingToBlock
+    if [[ $block == 0 ]]
+    then
+         takeAvailableCorners
+    fi
+    switchPlayer=0
+    displayBoard
+}
+
 
 function switchPlayer() {
     if [[ $switchPlayer == 0 ]]
     then
          playerPlaying
+    else
+         computerPlaying
     fi
     winningCondition $turnChange
 }
@@ -99,7 +115,7 @@ function winningCondition(){
            winner=1
         fi
     done
-    for((cell=1;$cell<=$$TOTAL_CELL;cell++))
+    for((cell=1;$cell<=$TOTAL_CELL;cell++))
     do
         if [[ ${board[$cell]}  == ${board[$cell+4]} && ${board[$cell+4]} == ${board[$cell+8]} && ${board[$cell+8]} == $1 ]]
         then
@@ -132,5 +148,6 @@ resettingBoard
 displayBoard
 tossToPlay
 switchPlayer
+emptyCells=()
 displayBoard
 checkingGameStatus

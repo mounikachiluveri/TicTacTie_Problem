@@ -202,6 +202,17 @@ function takeCenter() {
     fi
 }
 
+function takeAvailableSides() {
+   for((cell=2;cell<=8;cell+=2))
+   do
+      if [[ ${board[$cell]} == . ]]
+      then
+      board[$cell]=$computerLetter
+      ((count++))
+      break
+      fi
+   done
+}
 
 function checkingGameStatus() {
     if [[ $winner -eq 1 ]]

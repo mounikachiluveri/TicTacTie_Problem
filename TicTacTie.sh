@@ -147,6 +147,29 @@ function computerPlayingToWin() {
  done
 }
 
+function computerPlayingToBlock() {
+   for((cell=1;cell<=$TOTAL_CELL;cell++))
+   do
+     if [[ ${board[$cell]} == . ]]
+     then
+     board[$cell]=$playerLetter
+     winningCondition $playerLetter
+       if [[ $winner -eq 1 ]]
+       then
+         board[$cell]=$computerLetter
+         winner=0
+         #block=1
+         ((count++))
+         displayBoard
+         break
+       else
+         board[$cell]="."
+       fi
+     fi
+   done
+}
+
+
 function checkingGameStatus() {
     if [[ $winner -eq 1 ]]
     then

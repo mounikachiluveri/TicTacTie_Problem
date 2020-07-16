@@ -48,7 +48,7 @@ function tossToPlay() {
 function computerPlaying() {
     echo "========================="
     echo "Computer turn: "
-    #computerPlayingToWin
+    computerPlayingToWin
     #computerPlayingToBlock
     if [[ $block == 0 ]]
     then
@@ -127,7 +127,25 @@ function winningCondition(){
     done
 }
 
-
+function computerPlayingToWin() {
+   for((cell=1;cell<=$TOTAL_CELL;cell++))
+   do
+     if [[ ${board[$cell]} == . ]]
+     then
+     board[$cell]=$computerLetter
+     winningCondition $computerLetter
+      if [[ $winner -eq 1 ]]
+      then
+        displayBoard
+        echo "Winner is computer"
+        exit
+      else
+        board[$cell]="."
+        block=0
+      fi
+    fi
+ done
+}
 
 function checkingGameStatus() {
     if [[ $winner -eq 1 ]]

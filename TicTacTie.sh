@@ -50,7 +50,7 @@ function switchPlayer() {
     then
          playerPlaying
     fi
-    #winningCondition $turnChange
+    winningCondition $turnChange
 }
 
 function checkingEmptyCell() {
@@ -84,8 +84,53 @@ function playerPlaying() {
     switchPlayer=1
 }
 
+function winningCondition(){
+    for((cell=1;$cell<=$TOTAL_CELL;cell=$(($cell+3))))
+    do
+       if [[ ${board[$cell]} == ${board[$cell+1]} && ${board[$cell+1]} == ${board[$cell+2]} && ${board[$cell+2]} == $1 ]]
+       then
+           winner=1
+       fi
+    done
+    for((cell=1;$cell<=$ROW;cell++))
+    do
+        if [[ ${board[$cell]} == ${board[$cell+3]} && ${board[$cell+3]} == ${board[$cell+6]} && ${board[$cell]} == $1 ]]
+        then
+           winner=1
+        fi
+    done
+    for((cell=1;$cell<=$$TOTAL_CELL;cell++))
+    do
+        if [[ ${board[$cell]}  == ${board[$cell+4]} && ${board[$cell+4]} == ${board[$cell+8]} && ${board[$cell+8]} == $1 ]]
+        then
+           winner=1
+        elif [[ ${board[$cell]}  == ${board[$cell+4]} && ${board[$cell+4]} == ${board[$cell+6]} && ${board[$cell+6]} == $1 ]]
+        then
+           winner=1
+        fi
+    done
+}
+
+
+
+function checkingGameStatus() {
+    if [[ $winner -eq 1 ]]
+    then
+    displayBoard
+    echo "Winner is $turnChange's"
+    exit
+    elif [[ $count -ge $TOTAL_CELL ]]
+    then
+    echo "=========================="
+    displayBoard
+    echo "game is tie"
+    fi
+}
+
+
 resettingBoard
 displayBoard
 tossToPlay
 switchPlayer
 displayBoard
+checkingGameStatus
